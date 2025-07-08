@@ -1,0 +1,47 @@
+color-link default "#c0caf5,#1a1b2500"
+color-link comment "#565f89"
+
+color-link identifier "#7aa2f7"
+color-link identifier.class "#7aa2f7"
+color-link identifier.var "#7aa2f7"
+
+color-link constant "#ff9e64"
+color-link constant.number "#ff9e64"
+color-link constant.string "#9ece6a"
+
+color-link symbol "#bb9af7"
+color-link symbol.brackets "#c0caf5"
+color-link symbol.tag "#7aa2f7"
+
+color-link type "#7aa2f7"
+color-link type.keyword "#e0af68"
+
+color-link special "#bb9af7"
+color-link statement "#bb9af7"
+color-link preproc "#7dcfff"
+
+color-link underlined "#7dcfff"
+color-link error "bold #f7768e"
+color-link todo "bold #e0af68"
+
+color-link diff-added "#9ece6a"
+color-link diff-modified "#e0af68"
+color-link diff-deleted "#f7768e"
+
+color-link gutter-error "#f7768e"
+color-link gutter-warning "#e0af68"
+
+color-link statusline "#c0caf5,#16161e"
+color-link tabbar "#c0caf5,#16161e"
+color-link indent-char "#3b4261"
+color-link line-number "#3b4261"
+color-link current-line-number "#737aa2"
+
+color-link cursor-line "#283457"
+color-link color-column "#283457"
+color-link type.extended "default"
+
+# Additional background settings to ensure proper Tokyo Night background
+color-link selection "#c0caf5,#283457"
+color-link scrollbar "#414868"
+color-link divider "#414868"

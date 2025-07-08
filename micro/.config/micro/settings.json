@@ -1,0 +1,37 @@
+{
+    "*.css": {
+        "tabsize": 2
+    },
+    "*.html": {
+        "tabsize": 2
+    },
+    "*.javascript": {
+        "tabsize": 2
+    },
+    "*.json": {
+        "tabsize": 2
+    },
+    "*.lua": {
+        "tabsize": 2
+    },
+    "*.scss": {
+        "tabsize": 2
+    },
+    "*.toml": {
+        "tabsize": 2
+    },
+    "*.typescript": {
+        "tabsize": 2
+    },
+    "*.yaml": {
+        "tabsize": 2
+    },
+    "colorscheme": "tokyonight_night",
+    "go": {
+        "tabstospaces": false
+    },
+    "makefile": {
+        "tabstospaces": false
+    },
+    "tabstospaces": true
+}
