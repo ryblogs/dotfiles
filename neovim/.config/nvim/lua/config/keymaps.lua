@@ -6,6 +6,10 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- Enable mouse support for shift+click selection
+vim.opt.mouse = "a" -- Enable mouse in all modes
+vim.opt.mousemodel = "extend" -- Right-click extends selection
+
 -- Save with Ctrl+S
 vim.keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save file" })
 vim.keymap.set("i", "<C-s>", "<C-o>:w<CR>", { desc = "Save file" })
@@ -67,6 +71,14 @@ vim.keymap.set("v", "<S-Up>", "k", { desc = "Extend selection up" })
 vim.keymap.set("v", "<S-Down>", "j", { desc = "Extend selection down" })
 vim.keymap.set("v", "<S-Left>", "h", { desc = "Extend selection left" })
 vim.keymap.set("v", "<S-Right>", "l", { desc = "Extend selection right" })
+
+-- Double-click to select word (common IDE behavior)
+vim.keymap.set("n", "<2-LeftMouse>", "viw", { desc = "Select word under mouse" })
+vim.keymap.set("i", "<2-LeftMouse>", "<Esc>viw", { desc = "Select word under mouse" })
+
+-- Triple-click to select line (common IDE behavior)
+vim.keymap.set("n", "<3-LeftMouse>", "V", { desc = "Select line under mouse" })
+vim.keymap.set("i", "<3-LeftMouse>", "<Esc>V", { desc = "Select line under mouse" })
 
 -- Delete selection with backspace/delete (AGGRESSIVE OVERRIDE)
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "User" }, {
