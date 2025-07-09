@@ -42,6 +42,6 @@ color-link color-column "#283457"
 color-link type.extended "default"
 
 # Additional background settings to ensure proper Tokyo Night background
-color-link selection "#c0caf5,#283457"
+color-link selection "#1a1b26,#7aa2f7"
 color-link scrollbar "#414868"
 color-link divider "#414868"
