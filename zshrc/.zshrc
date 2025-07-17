@@ -212,5 +212,8 @@ compdef _uv_run_mod uv
 # GO
 export PATH=$PATH:$(go env GOPATH)/bin
 
+# GLOBDOTS
+setopt globdots
+
 # STARSHIP
 eval "$(starship init zsh)"

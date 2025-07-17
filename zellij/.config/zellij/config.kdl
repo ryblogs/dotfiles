@@ -259,7 +259,8 @@ load_plugins {
 // 
 // theme "dracula"
 // theme "gruvbox-dark"
-theme "tokyonight_night"
+// theme "tokyonight_night"
+theme "ayu_dark_custom"
  
 // Choose the base input mode of zellij.
 // Default: normal

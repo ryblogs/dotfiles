@@ -1,0 +1,47 @@
+color-link default "#BFBDB6,#0D111700"
+color-link comment "#5C6773"
+
+color-link identifier "#BFBDB6"
+color-link identifier.class "#59C2FF"
+color-link identifier.var "#BFBDB6"
+
+color-link constant "#FFAA33"
+color-link constant.number "#FF6666"
+color-link constant.string "#AAD94C"
+
+color-link symbol "#FF8F40"
+color-link symbol.brackets "#BFBDB6"
+color-link symbol.tag "#59C2FF"
+
+color-link type "#59C2FF"
+color-link type.keyword "#FFAA33"
+
+color-link special "#FF8F40"
+color-link statement "#FFAA33"
+color-link preproc "#59C2FF"
+
+color-link underlined "#59C2FF"
+color-link error "bold #FF3333"
+color-link todo "bold #FFAA33"
+
+color-link diff-added "#AAD94C"
+color-link diff-modified "#FFAA33"
+color-link diff-deleted "#FF3333"
+
+color-link gutter-error "#FF3333"
+color-link gutter-warning "#FFAA33"
+
+color-link statusline "#BFBDB6,#11151C"
+color-link tabbar "#BFBDB6,#11151C"
+color-link indent-char "#1F2430"
+color-link line-number "#1F2430"
+color-link current-line-number "#5C6773"
+
+color-link cursor-line "#131721"
+color-link color-column "#131721"
+color-link type.extended "default"
+
+# Additional background settings for proper Ayu Dark styling
+color-link selection "#BFBDB6,#1F2430"
+color-link scrollbar "#1F2430"
+color-link divider "#1F2430"

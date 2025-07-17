@@ -1,0 +1,148 @@
+// Add this to your config.kdl
+
+themes {
+    ayu_dark_custom {
+        // === TABS (Ribbons) ===
+        // Active tab - teal background with dark text
+        ribbon_selected {
+            base 10 14 20          // #0A0E14 - base (dark text on teal background)
+            background 76 191 153  // #4CBF99 - teal (background of active tab)
+            emphasis_0 10 14 20    // #0A0E14 - base (dark text for contrast)
+            emphasis_1 230 225 207 // #E6E1CF - text (light text when needed)
+            emphasis_2 39 45 56    // #272D38 - surface1
+            emphasis_3 170 217 76  // #AAD94C - green
+        }
+        
+        // Inactive tabs - muted
+        ribbon_unselected {
+            base 199 199 199       // #C7C7C7 - subtext1 (muted text)
+            background 39 45 56    // #272D38 - surface1 (muted background)
+            emphasis_0 230 225 207 // #E6E1CF - text
+            emphasis_1 92 103 115  // #5C6773 - overlay0
+            emphasis_2 199 199 199 // #C7C7C7 - subtext1
+            emphasis_3 76 191 153  // #4CBF99 - teal
+        }
+
+        // === WINDOW FRAMES/BORDERS ===
+        // Focused pane border - teal accent
+        frame_selected {
+            base 76 191 153        // #4CBF99 - teal
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 76 191 153  // #4CBF99 - teal
+            emphasis_1 170 217 76  // #AAD94C - green
+            emphasis_2 230 225 207 // #E6E1CF - text
+            emphasis_3 199 199 199 // #C7C7C7 - subtext1
+        }
+        
+        // Frame when in special modes (TAB, PANE, etc) - slightly different teal
+        frame_highlight {
+            base 89 194 255        // #59C2FF - sky (slightly different accent)
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 89 194 255  // #59C2FF - sky
+            emphasis_1 76 191 153  // #4CBF99 - teal
+            emphasis_2 230 225 207 // #E6E1CF - text
+            emphasis_3 170 217 76  // #AAD94C - green
+        }
+
+        // === TEXT COMPONENTS ===
+        // Regular text (unselected)
+        text_unselected {
+            base 230 225 207       // #E6E1CF - text
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 199 199 199 // #C7C7C7 - subtext1
+            emphasis_1 76 191 153  // #4CBF99 - teal
+            emphasis_2 170 217 76  // #AAD94C - green
+            emphasis_3 255 180 84  // #FFB454 - yellow
+        }
+        
+        // Selected/highlighted text
+        text_selected {
+            base 10 14 20          // #0A0E14 - base (dark text)
+            background 76 191 153  // #4CBF99 - teal (teal background for selection)
+            emphasis_0 230 225 207 // #E6E1CF - text
+            emphasis_1 10 14 20    // #0A0E14 - base
+            emphasis_2 170 217 76  // #AAD94C - green
+            emphasis_3 255 180 84  // #FFB454 - yellow
+        }
+
+        // === TABLE COMPONENTS ===
+        table_title {
+            base 76 191 153        // #4CBF99 - teal (table headers get accent)
+            background 39 45 56    // #272D38 - surface1
+            emphasis_0 230 225 207 // #E6E1CF - text
+            emphasis_1 76 191 153  // #4CBF99 - teal
+            emphasis_2 170 217 76  // #AAD94C - green
+            emphasis_3 199 199 199 // #C7C7C7 - subtext1
+        }
+        
+        table_cell_unselected {
+            base 230 225 207       // #E6E1CF - text
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 199 199 199 // #C7C7C7 - subtext1
+            emphasis_1 92 103 115  // #5C6773 - overlay0
+            emphasis_2 76 191 153  // #4CBF99 - teal
+            emphasis_3 170 217 76  // #AAD94C - green
+        }
+        
+        table_cell_selected {
+            base 10 14 20          // #0A0E14 - base
+            background 76 191 153  // #4CBF99 - teal
+            emphasis_0 230 225 207 // #E6E1CF - text
+            emphasis_1 170 217 76  // #AAD94C - green
+            emphasis_2 255 180 84  // #FFB454 - yellow
+            emphasis_3 10 14 20    // #0A0E14 - base
+        }
+
+        // === LIST COMPONENTS ===
+        list_unselected {
+            base 230 225 207       // #E6E1CF - text
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 199 199 199 // #C7C7C7 - subtext1
+            emphasis_1 92 103 115  // #5C6773 - overlay0
+            emphasis_2 76 191 153  // #4CBF99 - teal
+            emphasis_3 170 217 76  // #AAD94C - green
+        }
+        
+        list_selected {
+            base 10 14 20          // #0A0E14 - base
+            background 76 191 153  // #4CBF99 - teal
+            emphasis_0 230 225 207 // #E6E1CF - text
+            emphasis_1 170 217 76  // #AAD94C - green
+            emphasis_2 255 180 84  // #FFB454 - yellow
+            emphasis_3 10 14 20    // #0A0E14 - base
+        }
+
+        // === EXIT CODE COLORS ===
+        exit_code_success {
+            base 170 217 76        // #AAD94C - green
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 170 217 76  // #AAD94C - green
+            emphasis_1 76 191 153  // #4CBF99 - teal
+            emphasis_2 230 225 207 // #E6E1CF - text
+            emphasis_3 199 199 199 // #C7C7C7 - subtext1
+        }
+        
+        exit_code_error {
+            base 245 24 24         // #F51818 - red
+            background 10 14 20    // #0A0E14 - base
+            emphasis_0 245 24 24   // #F51818 - red
+            emphasis_1 230 225 207 // #E6E1CF - text
+            emphasis_2 199 199 199 // #C7C7C7 - subtext1
+            emphasis_3 92 103 115  // #5C6773 - overlay0
+        }
+
+        // === MULTIPLAYER USER COLORS ===
+        multiplayer_user_colors {
+            player_1 76 191 153    // #4CBF99 - teal
+            player_2 170 217 76    // #AAD94C - green
+            player_3 89 194 255    // #59C2FF - sky
+            player_4 255 180 84    // #FFB454 - yellow
+            player_5 210 166 255   // #D2A6FF - lavender
+            player_6 255 143 64    // #FF8F40 - peach
+            player_7 57 186 230    // #39BAE6 - blue
+            player_8 242 158 116   // #F29E74 - rosewater
+            player_9 230 80 80     // #E65050 - maroon
+            player_10 199 199 199  // #C7C7C7 - subtext1
+        }
+    }
+}

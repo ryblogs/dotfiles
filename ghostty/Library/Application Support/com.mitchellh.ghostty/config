@@ -43,8 +43,8 @@
 # resize-overlay-duration = 4s 200ms
 
 # appearance
-theme = tokyonight_night
-# GruvboxDarkHard, Eldritch, rose-pine-moon
+theme = ayu
+# GruvboxDarkHard, Eldritch, rose-pine-moon, tokyonight_night, ayu
 font-thicken = true
 cursor-style-blink = false
 

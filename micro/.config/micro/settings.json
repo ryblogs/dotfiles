@@ -26,7 +26,7 @@
     "*.yaml": {
         "tabsize": 2
     },
-    "colorscheme": "tokyonight_night",
+    "colorscheme": "ayu_dark",
     "go": {
         "tabstospaces": false
     },
