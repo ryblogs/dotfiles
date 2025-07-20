@@ -1,0 +1,8 @@
+{
+  "openai/Qwen/Qwen3-30B-A3B-MLX-4bit": {
+    "max_input_tokens": 32768,
+    "max_output_tokens": 8192,
+    "input_cost_per_token": 0,
+    "output_cost_per_token": 0
+  }
+}

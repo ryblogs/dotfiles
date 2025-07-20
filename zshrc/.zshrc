@@ -215,5 +215,10 @@ export PATH=$PATH:$(go env GOPATH)/bin
 # GLOBDOTS
 setopt globdots
 
+# AIDER
+export AIDER_OPENAI_API_KEY=none
+export AIDER_OPENAI_API_BASE=http://localhost:8888/v1
+export AIDER_MODEL=openai/Qwen/Qwen3-30B-A3B-MLX-4bit
+
 # STARSHIP
 eval "$(starship init zsh)"

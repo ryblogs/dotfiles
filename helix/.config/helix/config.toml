@@ -1,0 +1,213 @@
+# ~/.config/helix/config.toml
+
+theme = "default"
+
+[editor]
+mouse = true
+middle-click-paste = true
+auto-save = false
+line-number = "relative"
+cursorline = true
+auto-pairs = true
+indent-guides.render = true
+# Enable system clipboard integration
+clipboard-provider = "pasteboard" # macOS clipboard
+
+[editor.statusline]
+left = ["mode", "spinner"]
+center = ["file-name"]
+right = [
+    "diagnostics",
+    "selections",
+    "position",
+    "file-encoding",
+    "file-line-ending",
+    "file-type",
+]
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+# Save file
+"C-s" = ":write"
+
+# Quit
+"C-q" = ":quit"
+"C-S-q" = ":quit!" # Ctrl+Shift+Q to force quit
+
+# Undo/Redo
+"C-z" = "undo"
+"C-S-z" = "redo"
+
+# Select all
+"C-a" = "select_all"
+
+# Copy to system clipboard (this was the main issue!)
+"C-c" = "yank_main_selection_to_clipboard"
+
+# Paste from system clipboard
+"C-v" = "paste_clipboard_after"
+
+# Cut to system clipboard
+"C-x" = ["yank_main_selection_to_clipboard", "delete_selection"]
+
+# File explorer (built-in file picker)
+"C-b" = "file_picker"
+"C-o" = "file_picker"
+
+# Find
+"C-f" = "search"
+
+# Find and replace
+"C-h" = "replace"
+"C-S-f" = "global_search"
+
+# Go to line
+"C-g" = "goto_line"
+
+# Duplicate line
+"C-d" = [
+    "extend_line_below",
+    "yank_main_selection_to_clipboard",
+    "paste_clipboard_after",
+]
+
+# New line above/below
+"C-ret" = "open_below"
+"C-S-ret" = "open_above"
+
+# Word selection (double-click equivalent)
+"C-w" = "select_textobject_around"
+
+# Line selection
+"C-l" = "extend_line_below"
+
+# Navigate between splits
+"C-left" = "jump_view_left"
+"C-right" = "jump_view_right"
+"C-up" = "jump_view_up"
+"C-down" = "jump_view_down"
+
+# Comment toggle
+"C-/" = "toggle_comments"
+
+# Command palette
+"C-S-p" = "command_palette"
+
+# Start selection with Shift+arrows (like GUI editors)
+"S-left" = ["select_mode", "extend_char_left"]
+"S-right" = ["select_mode", "extend_char_right"]
+"S-up" = ["select_mode", "extend_line_up"]
+"S-down" = ["select_mode", "extend_line_down"]
+
+# Word-wise selection with Ctrl+Shift+arrows
+"C-S-left" = ["select_mode", "extend_prev_word_start"]
+"C-S-right" = ["select_mode", "extend_next_word_end"]
+
+# Page-wise selection with Shift+PageUp/PageDown
+"S-pageup" = ["select_mode", "page_up"]
+"S-pagedown" = ["select_mode", "page_down"]
+
+# Keep some traditional Helix bindings that are useful
+"space" = "command_palette"
+";" = "command_mode"
+
+[keys.insert]
+# Save file in insert mode
+"C-s" = ":write"
+
+# Quit in insert mode
+"C-q" = ["normal_mode", ":quit"]
+"C-S-q" = ["normal_mode", ":quit!"] # Ctrl+Shift+Q to force quit
+
+# Undo in insert mode
+"C-z" = ["normal_mode", "undo", "insert_mode"]
+
+# Select all in insert mode
+"C-a" = ["normal_mode", "select_all"]
+
+# Copy in insert mode (to system clipboard)
+"C-c" = ["normal_mode", "yank_main_selection_to_clipboard", "insert_mode"]
+
+# Cut in insert mode (to system clipboard)
+"C-x" = [
+    "normal_mode",
+    "yank_main_selection_to_clipboard",
+    "delete_selection",
+    "insert_mode",
+]
+
+# Paste in insert mode
+"C-v" = "paste_clipboard_before"
+
+# Auto-complete trigger
+"C-space" = "completion"
+
+# Indent/unindent
+"tab" = "indent"
+"S-tab" = "unindent"
+
+# Comment toggle in insert mode
+"C-/" = ["normal_mode", "toggle_comments", "insert_mode"]
+
+# Start selection with Shift+arrows from insert mode
+"S-left" = ["normal_mode", "select_mode", "extend_char_left"]
+"S-right" = ["normal_mode", "select_mode", "extend_char_right"]
+"S-up" = ["normal_mode", "select_mode", "extend_line_up"]
+"S-down" = ["normal_mode", "select_mode", "extend_line_down"]
+
+# Word-wise selection with Ctrl+Shift+arrows from insert mode
+"C-S-left" = ["normal_mode", "select_mode", "extend_prev_word_start"]
+"C-S-right" = ["normal_mode", "select_mode", "extend_next_word_end"]
+
+# Page-wise selection with Shift+PageUp/PageDown
+"S-pageup" = ["normal_mode", "select_mode", "page_up"]
+"S-pagedown" = ["normal_mode", "select_mode", "page_down"]
+
+[keys.select]
+# Clear selection with Esc (like GUI editors)
+"esc" = ["collapse_selection", "normal_mode"]
+
+# Copy selection to system clipboard (main fix!)
+"C-c" = "yank_main_selection_to_clipboard"
+
+# Cut selection to system clipboard
+"C-x" = ["yank_main_selection_to_clipboard", "delete_selection"]
+
+# Paste over selection
+"C-v" = "replace_selections_with_clipboard"
+
+# Quit from select mode
+"C-q" = ["normal_mode", ":quit"]
+"C-S-q" = ["normal_mode", ":quit!"]
+
+# Delete selection with backspace/delete
+"backspace" = "delete_selection"
+"del" = "delete_selection"
+
+# Indent/unindent selection
+"tab" = "indent"
+"S-tab" = "unindent"
+
+# Extend selection with arrow keys
+"S-left" = "extend_char_left"
+"S-right" = "extend_char_right"
+"S-up" = "extend_line_up"
+"S-down" = "extend_line_down"
+
+# Word-wise selection (continue extending if already selecting)
+"C-S-left" = "extend_prev_word_start"
+"C-S-right" = "extend_next_word_end"
+
+# Comment toggle in select mode
+"C-/" = "toggle_comments"
+
+# Page-wise selection with Shift+PageUp/PageDown
+"S-pageup" = "page_up"
+"S-pagedown" = "page_down"
