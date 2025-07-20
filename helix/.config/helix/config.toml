@@ -1,12 +1,13 @@
 # ~/.config/helix/config.toml
 
-theme = "default"
+# theme = "default"
+theme = "ayu_dark"
 
 [editor]
 mouse = true
 middle-click-paste = true
 auto-save = false
-line-number = "relative"
+line-number = "absolute"
 cursorline = true
 auto-pairs = true
 indent-guides.render = true
@@ -64,6 +65,10 @@ hidden = false
 # Find
 "C-f" = "search"
 
+# Find next/previous (VS Code style)
+"C-n" = "search_next"
+"C-p" = "search_prev"
+
 # Find and replace
 "C-h" = "replace"
 "C-S-f" = "global_search"
@@ -118,6 +123,9 @@ hidden = false
 "space" = "command_palette"
 ";" = "command_mode"
 
+# Deselect selection with Esc in normal mode
+"esc" = "collapse_selection"
+
 [keys.insert]
 # Save file in insert mode
 "C-s" = ":write"
@@ -169,6 +177,10 @@ hidden = false
 # Page-wise selection with Shift+PageUp/PageDown
 "S-pageup" = ["normal_mode", "select_mode", "page_up"]
 "S-pagedown" = ["normal_mode", "select_mode", "page_down"]
+
+# Find next/previous from insert mode
+"C-n" = ["normal_mode", "search_next", "insert_mode"]
+"C-p" = ["normal_mode", "search_prev", "insert_mode"]
 
 [keys.select]
 # Clear selection with Esc (like GUI editors)
