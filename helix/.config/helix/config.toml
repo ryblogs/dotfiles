@@ -1,14 +1,14 @@
 # ~/.config/helix/config.toml
 
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # THEME & APPEARANCE
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 theme = "ayu_dark"
 
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # EDITOR SETTINGS
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [editor]
 # Basic behavior
@@ -45,165 +45,165 @@ select = "underline"
 [editor.file-picker]
 hidden = false
 
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # NORMAL MODE KEYBINDINGS
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [keys.normal]
-# ── File Operations ──────────────────────────────────────────────────────
-"C-s" = ":write"                    # Save file
-"C-q" = ":quit"                     # Quit
-"C-S-q" = ":quit!"                  # Force quit
-"C-b" = "file_picker"               # File explorer
-"C-o" = "file_picker"               # File explorer (alt)
+# ── File Operations ───────────────────────────────────────────────
+"C-s" = ":write"      # Save file
+"C-q" = ":quit"       # Quit
+"C-S-q" = ":quit!"    # Force quit
+"C-b" = "file_picker" # File explorer
+"C-o" = "file_picker" # File explorer (alt)
 
-# ── Clipboard Operations ─────────────────────────────────────────────────
-"C-c" = "yank_main_selection_to_clipboard"                    # Copy
-"C-v" = "paste_clipboard_after"                               # Paste
+# ── Clipboard Operations ──────────────────────────────────────────
+"C-c" = "yank_main_selection_to_clipboard"                       # Copy
+"C-v" = "paste_clipboard_after"                                  # Paste
 "C-x" = ["yank_main_selection_to_clipboard", "delete_selection"] # Cut
 
-# ── Undo/Redo ────────────────────────────────────────────────────────────
-"C-z" = "undo"                      # Undo
-"C-S-z" = "redo"                    # Redo
+# ── Undo/Redo ─────────────────────────────────────────────────────
+"C-z" = "undo"   # Undo
+"C-S-z" = "redo" # Redo
 
-# ── Selection ─────────────────────────────────────────────────────────────
-"C-a" = "select_all"                # Select all
-"C-w" = "select_textobject_around"  # Word selection
-"C-l" = "extend_line_below"         # Line selection
-"esc" = "collapse_selection"        # Deselect
+# ── Selection ─────────────────────────────────────────────────────
+"C-a" = "select_all"               # Select all
+"C-w" = "select_textobject_around" # Word selection
+"C-l" = "extend_line_below"        # Line selection
+"esc" = "collapse_selection"       # Deselect
 
-# ── Text Selection with Shift+Arrows ─────────────────────────────────────
+# ── Text Selection with Shift+Arrows ──────────────────────────────
 "S-left" = ["select_mode", "extend_char_left"]
 "S-right" = ["select_mode", "extend_char_right"]
 "S-up" = ["select_mode", "extend_line_up"]
 "S-down" = ["select_mode", "extend_line_down"]
 
-# ── Word-wise Selection ───────────────────────────────────────────────────
+# ── Word-wise Selection ───────────────────────────────────────────
 "C-S-left" = ["select_mode", "extend_prev_word_start"]
 "C-S-right" = ["select_mode", "extend_next_word_end"]
 
-# ── Page-wise Selection ───────────────────────────────────────────────────
+# ── Page-wise Selection ───────────────────────────────────────────
 "S-pageup" = ["select_mode", "page_up"]
 "S-pagedown" = ["select_mode", "page_down"]
 
-# ── Search & Replace ──────────────────────────────────────────────────────
-"C-f" = "search"                    # Find
-"C-n" = "search_next"               # Find next
-"C-p" = "search_prev"               # Find previous
-"C-h" = "replace"                   # Find and replace
-"C-S-f" = "global_search"           # Global search
+# ── Search & Replace ──────────────────────────────────────────────
+"C-f" = "search"          # Find
+"C-n" = "search_next"     # Find next
+"C-p" = "search_prev"     # Find previous
+"C-h" = "replace"         # Find and replace
+"C-S-f" = "global_search" # Global search
 
-# ── Navigation ────────────────────────────────────────────────────────────
-"C-g" = "goto_line"                 # Go to line
-"C-left" = "jump_view_left"         # Navigate splits
+# ── Navigation ────────────────────────────────────────────────────
+"C-g" = "goto_line"           # Go to line
+"C-left" = "jump_view_left"   # Navigate splits
 "C-right" = "jump_view_right"
 "C-up" = "jump_view_up"
 "C-down" = "jump_view_down"
 
-# ── Text Manipulation ─────────────────────────────────────────────────────
-"C-d" = [                           # Duplicate line
+# ── Text Manipulation ─────────────────────────────────────────────
+"C-d" = [ # Duplicate line
     "extend_line_below",
     "yank_main_selection_to_clipboard",
     "paste_clipboard_after",
 ]
-"C-ret" = "open_below"              # New line below
-"C-S-ret" = "open_above"            # New line above
-"C-/" = "toggle_comments"           # Comment toggle
-"backspace" = "delete_selection"    # Delete selection
-"del" = "delete_selection"
+"C-ret" = "open_below" # New line below
+"C-S-ret" = "open_above" # New line above
+"C-/" = "toggle_comments" # Comment toggle
+"del" = "delete_selection" # Delete selection
 
-# ── Command Access ────────────────────────────────────────────────────────
-"C-S-p" = "command_palette"         # Command palette
-";" = "command_mode"                # Command mode
+# ── Command Access ────────────────────────────────────────────────
+"C-S-p" = "command_palette" # Command palette
+";" = "command_mode"        # Command mode
 
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # INSERT MODE KEYBINDINGS
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [keys.insert]
-# ── File Operations ──────────────────────────────────────────────────────
+# ── File Operations ───────────────────────────────────────────────
 "C-s" = ":write"                    # Save file
 "C-q" = ["normal_mode", ":quit"]    # Quit
 "C-S-q" = ["normal_mode", ":quit!"] # Force quit
 
-# ── Clipboard Operations ─────────────────────────────────────────────────
+# ── Clipboard Operations ──────────────────────────────────────────
 "C-c" = ["normal_mode", "yank_main_selection_to_clipboard", "insert_mode"]
-"C-v" = "paste_clipboard_before"    # Paste
-"C-x" = [                           # Cut
+# "C-c" = "yank_main_selection_to_clipboard"
+# "C-c" = "yank_to_clipboard"
+"C-v" = "paste_clipboard_before" # Paste
+# "C-v" = "paste_clipboard_after" # Paste
+"C-x" = [ # Cut
     "normal_mode",
     "yank_main_selection_to_clipboard",
     "delete_selection",
     "insert_mode",
 ]
 
-# ── Undo ──────────────────────────────────────────────────────────────────
+# ── Undo ──────────────────────────────────────────────────────────
 "C-z" = ["normal_mode", "undo", "insert_mode"]
 
-# ── Selection ─────────────────────────────────────────────────────────────
+# ── Selection ─────────────────────────────────────────────────────
 "C-a" = ["normal_mode", "select_all"] # Select all
 
-# ── Text Selection from Insert Mode ──────────────────────────────────────
+# ── Text Selection from Insert Mode ───────────────────────────────
 "S-left" = ["normal_mode", "select_mode", "extend_char_left"]
 "S-right" = ["normal_mode", "select_mode", "extend_char_right"]
 "S-up" = ["normal_mode", "select_mode", "extend_line_up"]
 "S-down" = ["normal_mode", "select_mode", "extend_line_down"]
 
-# ── Word-wise Selection ───────────────────────────────────────────────────
+# ── Word-wise Selection ───────────────────────────────────────────
 "C-S-left" = ["normal_mode", "select_mode", "extend_prev_word_start"]
 "C-S-right" = ["normal_mode", "select_mode", "extend_next_word_end"]
 
-# ── Page-wise Selection ───────────────────────────────────────────────────
+# ── Page-wise Selection ───────────────────────────────────────────
 "S-pageup" = ["normal_mode", "select_mode", "page_up"]
 "S-pagedown" = ["normal_mode", "select_mode", "page_down"]
 
-# ── Search ────────────────────────────────────────────────────────────────
+# ── Search ────────────────────────────────────────────────────────
 "C-n" = ["normal_mode", "search_next", "insert_mode"]
 "C-p" = ["normal_mode", "search_prev", "insert_mode"]
 
-# ── Text Manipulation ─────────────────────────────────────────────────────
+# ── Text Manipulation ─────────────────────────────────────────────
 "C-/" = ["normal_mode", "toggle_comments", "insert_mode"]
-"tab" = "indent"                    # Indent
-"S-tab" = "unindent"                # Unindent
-"backspace" = "delete_selection"    # Delete selection
-"del" = "delete_selection"
+"tab" = "indent"                                          # Indent
+"S-tab" = "unindent"                                      # Unindent
+"del" = "delete_selection"                                # Delete selection
 
-# ── Completion ────────────────────────────────────────────────────────────
-"C-space" = "completion"            # Auto-complete trigger
+# ── Completion ────────────────────────────────────────────────────
+"C-space" = "completion" # Auto-complete trigger
 
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # SELECT MODE KEYBINDINGS
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [keys.select]
-# ── Mode Control ──────────────────────────────────────────────────────────
+# ── Mode Control ──────────────────────────────────────────────────
 "esc" = ["collapse_selection", "normal_mode"] # Exit selection
 
-# ── File Operations ──────────────────────────────────────────────────────
+# ── File Operations ───────────────────────────────────────────────
 "C-q" = ["normal_mode", ":quit"]    # Quit
 "C-S-q" = ["normal_mode", ":quit!"] # Force quit
 
-# ── Clipboard Operations ─────────────────────────────────────────────────
-"C-c" = "yank_main_selection_to_clipboard"       # Copy selection
+# ── Clipboard Operations ──────────────────────────────────────────
+"C-c" = "yank_main_selection_to_clipboard"                       # Copy selection
 "C-x" = ["yank_main_selection_to_clipboard", "delete_selection"] # Cut
-"C-v" = "replace_selections_with_clipboard"      # Paste over selection
+"C-v" = "replace_selections_with_clipboard"                      # Paste over selection
 
-# ── Selection Extension ───────────────────────────────────────────────────
-"S-left" = "extend_char_left"       # Extend with arrows
+# ── Selection Extension ───────────────────────────────────────────
+"S-left" = "extend_char_left"   # Extend with arrows
 "S-right" = "extend_char_right"
 "S-up" = "extend_line_up"
 "S-down" = "extend_line_down"
 
-# ── Word-wise Selection ───────────────────────────────────────────────────
+# ── Word-wise Selection ───────────────────────────────────────────
 "C-S-left" = "extend_prev_word_start"
 "C-S-right" = "extend_next_word_end"
 
-# ── Page-wise Selection ───────────────────────────────────────────────────
+# ── Page-wise Selection ───────────────────────────────────────────
 "S-pageup" = "page_up"
 "S-pagedown" = "page_down"
 
-# ── Text Manipulation ─────────────────────────────────────────────────────
-"C-/" = "toggle_comments"           # Comment toggle
-"tab" = "indent"                    # Indent selection
-"S-tab" = "unindent"                # Unindent selection
-"backspace" = "delete_selection"    # Delete selection
-"del" = "delete_selection"
+# ── Text Manipulation ─────────────────────────────────────────────
+"C-/" = "toggle_comments"  # Comment toggle
+"tab" = "indent"           # Indent selection
+"S-tab" = "unindent"       # Unindent selection
+"del" = "delete_selection" # Delete selection
