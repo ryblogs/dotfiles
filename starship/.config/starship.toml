@@ -88,6 +88,7 @@ format = '[[($all_status$ahead_behind )](fg:base bg:teal)]($style)'
 
 # Language indicators are subtle, using the same background as the directory.
 [python]
+disabled = true
 symbol = ""
 style = "bg:surface1"
 format = '[[ $symbol ($version) ](fg:subtext1 bg:surface1)]($style)'

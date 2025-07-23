@@ -11,14 +11,14 @@ vim.opt.mouse = "a" -- Enable mouse in all modes
 vim.opt.mousemodel = "extend" -- Right-click extends selection
 
 -- Save with Ctrl+S
-vim.keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save file" })
-vim.keymap.set("i", "<C-s>", "<C-o>:w<CR>", { desc = "Save file" })
-vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save file", silent = true })
+vim.keymap.set("i", "<C-s>", "<C-o>:w<CR>", { desc = "Save file", silent = true })
+vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>", { desc = "Save file", silent = true })
 
 -- Quit with Ctrl+Q
-vim.keymap.set("n", "<C-q>", ":q<CR>", { desc = "Quit" })
-vim.keymap.set("i", "<C-q>", "<Esc>:q<CR>", { desc = "Quit" })
-vim.keymap.set("v", "<C-q>", "<Esc>:q<CR>", { desc = "Quit" })
+vim.keymap.set("n", "<C-q>", ":q<CR>", { desc = "Quit", silent = true })
+vim.keymap.set("i", "<C-q>", "<Esc>:q<CR>", { desc = "Quit", silent = true })
+vim.keymap.set("v", "<C-q>", "<Esc>:q<CR>", { desc = "Quit", silent = true })
 
 -- Undo with Ctrl+Z
 vim.keymap.set("n", "<C-z>", "u", { desc = "Undo" })
@@ -29,8 +29,8 @@ vim.keymap.set("n", "<C-S-z>", "<C-r>", { desc = "Redo" })
 vim.keymap.set("i", "<C-S-z>", "<C-o><C-r>", { desc = "Redo" })
 
 -- Select all with Ctrl+A
-vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select all" })
-vim.keymap.set("i", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
+vim.keymap.set("n", "<C-a>", ":<C-u>normal! ggVG<CR>", { desc = "Select all" })
+vim.keymap.set("i", "<C-a>", "<Esc>:<C-u>normal! ggVG<CR>", { desc = "Select all" })
 
 -- Copy with Ctrl+C and keep selection
 vim.keymap.set("v", "<C-c>", '"+ygv', { desc = "Copy to clipboard and keep selection" })
@@ -43,10 +43,53 @@ vim.keymap.set("v", "<C-v>", '"+P', { desc = "Paste over selection" })
 -- Cut with Ctrl+X
 vim.keymap.set("v", "<C-x>", '"+d', { desc = "Cut to clipboard" })
 
--- Alternative: Use Ctrl+; for commenting
+-- Comment/uncomment with Ctrl+/ and adjust cursor position
+local function smart_comment()
+  local line_num = vim.fn.line(".")
+  local col = vim.fn.col(".")
+  local original_line = vim.fn.getline(line_num)
+
+  vim.cmd("Commentary")
+
+  local new_line = vim.fn.getline(line_num)
+  local length_diff = #new_line - #original_line
+
+  -- Adjust cursor position
+  if length_diff ~= 0 then
+    vim.fn.cursor(line_num, col + length_diff)
+  end
+end
+
+local function smart_comment_visual()
+  local start_line = vim.fn.line("'<")
+  local start_col = vim.fn.col("'<")
+  local original_line = vim.fn.getline(start_line)
+
+  vim.cmd("Commentary")
+
+  local new_line = vim.fn.getline(start_line)
+  local length_diff = #new_line - #original_line
+
+  -- Restore selection and adjust
+  vim.cmd("normal! gv")
+  if length_diff ~= 0 then
+    vim.fn.cursor(start_line, start_col + length_diff)
+    vim.cmd("normal! gv")
+  end
+end
+
+vim.keymap.set("n", "<C-/>", smart_comment, { desc = "Toggle comment" })
+vim.keymap.set("i", "<C-/>", function()
+  vim.cmd("stopinsert")
+  smart_comment()
+  vim.cmd("startinsert")
+  -- Move cursor to end of insertion
+  vim.cmd("normal! l")
+end, { desc = "Toggle comment" })
+vim.keymap.set("v", "<C-/>", smart_comment_visual, { desc = "Toggle comment" })
 
 -- Toggle file explorer with Ctrl+B (LazyVim uses neo-tree)
-vim.keymap.set("n", "<C-b>", ":Neotree toggle<CR>", { desc = "Toggle file explorer" })
+vim.keymap.set("n", "<C-b>", "<leader>e", { desc = "Toggle file explorer", remap = true })
 
 -- Indent with Tab in visual mode
 vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent selection" })
@@ -80,6 +123,11 @@ vim.keymap.set("i", "<2-LeftMouse>", "<Esc>viw", { desc = "Select word under mou
 vim.keymap.set("n", "<3-LeftMouse>", "V", { desc = "Select line under mouse" })
 vim.keymap.set("i", "<3-LeftMouse>", "<Esc>V", { desc = "Select line under mouse" })
 
+-- Command palette with Ctrl+Shift+P (like Helix/VSCode)
+vim.keymap.set("n", "<C-S-p>", ":Telescope commands<CR>", { desc = "Command palette", silent = true })
+vim.keymap.set("i", "<C-S-p>", "<Esc>:Telescope commands<CR>", { desc = "Command palette", silent = true })
+vim.keymap.set("v", "<C-S-p>", "<Esc>:Telescope commands<CR>", { desc = "Command palette", silent = true })
+
 -- Delete selection with backspace/delete (AGGRESSIVE OVERRIDE)
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "User" }, {
   callback = function()
@@ -89,3 +137,89 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "User" }, {
     end)
   end,
 })
+
+-- Right-click context menu with LSP actions
+local function show_context_menu()
+  local actions = {
+    {
+      "Go to Definition",
+      function()
+        vim.lsp.buf.definition()
+      end,
+    },
+    {
+      "Go to Declaration",
+      function()
+        vim.lsp.buf.declaration()
+      end,
+    },
+    {
+      "Find References",
+      function()
+        require("telescope.builtin").lsp_references()
+      end,
+    },
+    {
+      "Show Hover Info",
+      function()
+        vim.lsp.buf.hover()
+      end,
+    },
+    {
+      "Rename Symbol",
+      function()
+        vim.lsp.buf.rename()
+      end,
+    },
+    {
+      "Code Actions",
+      function()
+        vim.lsp.buf.code_action()
+      end,
+    },
+    {
+      "Go to Implementation",
+      function()
+        vim.lsp.buf.implementation()
+      end,
+    },
+    {
+      "Go to Type Definition",
+      function()
+        vim.lsp.buf.type_definition()
+      end,
+    },
+  }
+
+  -- Filter to only show actions available for current buffer
+  local available_actions = {}
+  for _, action in ipairs(actions) do
+    if #vim.lsp.get_active_clients({ bufnr = 0 }) > 0 then
+      table.insert(available_actions, action)
+    end
+  end
+
+  if #available_actions == 0 then
+    vim.notify("No LSP actions available")
+    return
+  end
+
+  vim.ui.select(
+    vim.tbl_map(function(action)
+      return action[1]
+    end, available_actions),
+    { prompt = "LSP Actions:" },
+    function(choice, idx)
+      if choice and available_actions[idx] then
+        available_actions[idx][2]()
+      end
+    end
+  )
+end
+
+-- Map right-click to show context menu
+vim.keymap.set("n", "<RightMouse>", show_context_menu, { desc = "Show context menu" })
+vim.keymap.set("i", "<RightMouse>", function()
+  vim.cmd("stopinsert")
+  show_context_menu()
+end, { desc = "Show context menu" })

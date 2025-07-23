@@ -30,8 +30,10 @@
     "go": {
         "tabstospaces": false
     },
+    "indentchar": "|",
     "makefile": {
         "tabstospaces": false
     },
+    "mkparents": true,
     "tabstospaces": true
 }
