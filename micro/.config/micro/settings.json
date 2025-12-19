@@ -35,5 +35,6 @@
         "tabstospaces": false
     },
     "mkparents": true,
+    "showchars": "tab=\u003e,space=.,itab=|\u003e,ispace=│",
     "tabstospaces": true
 }

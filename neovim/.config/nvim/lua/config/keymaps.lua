@@ -7,7 +7,7 @@
 -- Add any additional keymaps here
 
 -- Enable mouse support for shift+click selection
-vim.opt.mouse = "a" -- Enable mouse in all modes
+vim.opt.mouse = "a"           -- Enable mouse in all modes
 vim.opt.mousemodel = "extend" -- Right-click extends selection
 
 -- Save with Ctrl+S
@@ -44,49 +44,42 @@ vim.keymap.set("v", "<C-v>", '"+P', { desc = "Paste over selection" })
 vim.keymap.set("v", "<C-x>", '"+d', { desc = "Cut to clipboard" })
 
 -- Comment/uncomment with Ctrl+/ and adjust cursor position
-local function smart_comment()
-  local line_num = vim.fn.line(".")
-  local col = vim.fn.col(".")
-  local original_line = vim.fn.getline(line_num)
+-- A single, smart function to handle commenting for all modes.
+local function smart_toggle()
+    -- Get the current mode and the cursor's current position.
+    local mode = vim.fn.mode()
+    local original_pos = vim.api.nvim_win_get_cursor(0)
+    local original_line = vim.fn.getline(original_pos[1])
 
-  vim.cmd("Commentary")
+    -- Execute the comment command based on the mode.
+    if mode:find('[vV\x16]') then
+        vim.cmd("'<,'>Commentary")
+    else
+        vim.cmd("Commentary")
+    end
 
-  local new_line = vim.fn.getline(line_num)
-  local length_diff = #new_line - #original_line
+    -- Calculate the new cursor position.
+    local new_line = vim.fn.getline(original_pos[1])
+    local length_diff = #new_line - #original_line
+    local new_col = math.max(0, original_pos[2] + length_diff)
 
-  -- Adjust cursor position
-  if length_diff ~= 0 then
-    vim.fn.cursor(line_num, col + length_diff)
-  end
+    -- If in visual mode, restore the selection.
+    if mode:find('[vV\x16]') then
+        vim.cmd("normal! gv")
+    else
+        -- Move the cursor to its new calculated position.
+        vim.api.nvim_win_set_cursor(0, { original_pos[1], new_col })
+    end
 end
 
-local function smart_comment_visual()
-  local start_line = vim.fn.line("'<")
-  local start_col = vim.fn.col("'<")
-  local original_line = vim.fn.getline(start_line)
+-- Keymap for Normal Mode
+vim.keymap.set("n", "<C-/>", smart_toggle, { desc = "Toggle comment" })
 
-  vim.cmd("Commentary")
+-- Keymap for Visual Mode
+vim.keymap.set("v", "<C-/>", smart_toggle, { desc = "Toggle comment" })
 
-  local new_line = vim.fn.getline(start_line)
-  local length_diff = #new_line - #original_line
-
-  -- Restore selection and adjust
-  vim.cmd("normal! gv")
-  if length_diff ~= 0 then
-    vim.fn.cursor(start_line, start_col + length_diff)
-    vim.cmd("normal! gv")
-  end
-end
-
-vim.keymap.set("n", "<C-/>", smart_comment, { desc = "Toggle comment" })
-vim.keymap.set("i", "<C-/>", function()
-  vim.cmd("stopinsert")
-  smart_comment()
-  vim.cmd("startinsert")
-  -- Move cursor to end of insertion
-  vim.cmd("normal! l")
-end, { desc = "Toggle comment" })
-vim.keymap.set("v", "<C-/>", smart_comment_visual, { desc = "Toggle comment" })
+-- Keymap for Insert Mode - use <C-o> to execute normal command and auto-return
+vim.keymap.set("i", "<C-/>", "<C-o>:lua smart_toggle()<CR>", { desc = "Toggle comment" })
 
 -- Toggle file explorer with Ctrl+B (LazyVim uses neo-tree)
 vim.keymap.set("n", "<C-b>", "<leader>e", { desc = "Toggle file explorer", remap = true })
@@ -130,96 +123,96 @@ vim.keymap.set("v", "<C-S-p>", "<Esc>:Telescope commands<CR>", { desc = "Command
 
 -- Delete selection with backspace/delete (AGGRESSIVE OVERRIDE)
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "User" }, {
-  callback = function()
-    vim.schedule(function()
-      pcall(vim.keymap.set, "v", "<BS>", "c", { desc = "Delete selection", buffer = true, remap = true })
-      pcall(vim.keymap.set, "v", "<Del>", "c", { desc = "Delete selection", buffer = true, remap = true })
-    end)
-  end,
+    callback = function()
+        vim.schedule(function()
+            pcall(vim.keymap.set, "v", "<BS>", "c", { desc = "Delete selection", buffer = true, remap = true })
+            pcall(vim.keymap.set, "v", "<Del>", "c", { desc = "Delete selection", buffer = true, remap = true })
+        end)
+    end,
 })
 
 -- Right-click context menu with LSP actions
 local function show_context_menu()
-  local actions = {
-    {
-      "Go to Definition",
-      function()
-        vim.lsp.buf.definition()
-      end,
-    },
-    {
-      "Go to Declaration",
-      function()
-        vim.lsp.buf.declaration()
-      end,
-    },
-    {
-      "Find References",
-      function()
-        require("telescope.builtin").lsp_references()
-      end,
-    },
-    {
-      "Show Hover Info",
-      function()
-        vim.lsp.buf.hover()
-      end,
-    },
-    {
-      "Rename Symbol",
-      function()
-        vim.lsp.buf.rename()
-      end,
-    },
-    {
-      "Code Actions",
-      function()
-        vim.lsp.buf.code_action()
-      end,
-    },
-    {
-      "Go to Implementation",
-      function()
-        vim.lsp.buf.implementation()
-      end,
-    },
-    {
-      "Go to Type Definition",
-      function()
-        vim.lsp.buf.type_definition()
-      end,
-    },
-  }
+    local actions = {
+        {
+            "Go to Definition",
+            function()
+                vim.lsp.buf.definition()
+            end,
+        },
+        {
+            "Go to Declaration",
+            function()
+                vim.lsp.buf.declaration()
+            end,
+        },
+        {
+            "Find References",
+            function()
+                require("telescope.builtin").lsp_references()
+            end,
+        },
+        {
+            "Show Hover Info",
+            function()
+                vim.lsp.buf.hover()
+            end,
+        },
+        {
+            "Rename Symbol",
+            function()
+                vim.lsp.buf.rename()
+            end,
+        },
+        {
+            "Code Actions",
+            function()
+                vim.lsp.buf.code_action()
+            end,
+        },
+        {
+            "Go to Implementation",
+            function()
+                vim.lsp.buf.implementation()
+            end,
+        },
+        {
+            "Go to Type Definition",
+            function()
+                vim.lsp.buf.type_definition()
+            end,
+        },
+    }
 
-  -- Filter to only show actions available for current buffer
-  local available_actions = {}
-  for _, action in ipairs(actions) do
-    if #vim.lsp.get_active_clients({ bufnr = 0 }) > 0 then
-      table.insert(available_actions, action)
+    -- Filter to only show actions available for current buffer
+    local available_actions = {}
+    for _, action in ipairs(actions) do
+        if #vim.lsp.get_active_clients({ bufnr = 0 }) > 0 then
+            table.insert(available_actions, action)
+        end
     end
-  end
 
-  if #available_actions == 0 then
-    vim.notify("No LSP actions available")
-    return
-  end
-
-  vim.ui.select(
-    vim.tbl_map(function(action)
-      return action[1]
-    end, available_actions),
-    { prompt = "LSP Actions:" },
-    function(choice, idx)
-      if choice and available_actions[idx] then
-        available_actions[idx][2]()
-      end
+    if #available_actions == 0 then
+        vim.notify("No LSP actions available")
+        return
     end
-  )
+
+    vim.ui.select(
+        vim.tbl_map(function(action)
+            return action[1]
+        end, available_actions),
+        { prompt = "LSP Actions:" },
+        function(choice, idx)
+            if choice and available_actions[idx] then
+                available_actions[idx][2]()
+            end
+        end
+    )
 end
 
 -- Map right-click to show context menu
 vim.keymap.set("n", "<RightMouse>", show_context_menu, { desc = "Show context menu" })
 vim.keymap.set("i", "<RightMouse>", function()
-  vim.cmd("stopinsert")
-  show_context_menu()
+    vim.cmd("stopinsert")
+    show_context_menu()
 end, { desc = "Show context menu" })

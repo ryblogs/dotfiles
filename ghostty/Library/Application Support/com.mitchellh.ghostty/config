@@ -48,6 +48,10 @@ theme = ayu
 font-thicken = true
 cursor-style-blink = false
 
+# window size
+window-width = 130
+window-height = 30
+
 # window decorations
 window-decoration = true
 
@@ -66,10 +70,18 @@ keybind = ctrl+left=esc:b
 # custom-shader = shaders/cursor_blaze_no_trail.glsl
 # custom-shader = shaders/cursor_blaze_tapered.glsl
 # custom-shader = shaders/cursor_blaze.glsl
+# custom-shader = shaders/cursor_blaze2.glsl
 # custom-shader = shaders/cursor_frozen.glsl
 # custom-shader = shaders/cursor_smear_fade.glsl
-custom-shader = shaders/cursor_smear.glsl
+# custom-shader = shaders/cursor_smear.glsl
 # custom-shader = shaders/debug_cursor_animated.glsl
 # custom-shader = shaders/debug_cursor_static.glsl
 # custom-shader = shaders/manga_slash.glsl
 # custom-shader = shaders/WIP.glsl
+custom-shader = shaders/cursor_warp.glsl
+
+# Update channel
+auto-update-channel = tip
+
+# Attention
+bell-features = no-attention

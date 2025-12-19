@@ -1,4 +1,5 @@
 # ~/.config/helix/config.toml
+# Updated: Tab for completion, Ctrl+]/[ for indent (VS Code style)
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # THEME & APPEARANCE
@@ -24,6 +25,12 @@ indent-guides.render = true
 
 # System integration
 clipboard-provider = "pasteboard" # macOS clipboard
+
+# Bufferline
+bufferline = "always"
+
+# Completion settings - keep Tab for completion!
+auto-completion = true  # Tab can trigger completion
 
 [editor.statusline]
 left = ["mode", "spinner"]
@@ -56,11 +63,19 @@ hidden = false
 "C-S-q" = ":quit!"    # Force quit
 "C-b" = "file_picker" # File explorer
 "C-o" = "file_picker" # File explorer (alt)
+"C-e" = "file_explorer"  # Hierarchical file explorer
+"C-y" = [  # Yazi file manager integration
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
 
 # ── Clipboard Operations ──────────────────────────────────────────
-"C-c" = "yank_main_selection_to_clipboard"                       # Copy
-"C-v" = "paste_clipboard_after"                                  # Paste
-"C-x" = ["yank_main_selection_to_clipboard", "delete_selection"] # Cut
+"C-c" = "yank_main_selection_to_clipboard"  # Copy
+"C-v" = "paste_clipboard_after"             # Paste
+"C-x" = ["yank_main_selection_to_clipboard", "delete_selection_noyank"] # Cut (no double-yank)
 
 # ── Undo/Redo ─────────────────────────────────────────────────────
 "C-z" = "undo"   # Undo
@@ -106,10 +121,17 @@ hidden = false
     "yank_main_selection_to_clipboard",
     "paste_clipboard_after",
 ]
-"C-ret" = "open_below" # New line below
-"C-S-ret" = "open_above" # New line above
+"C-ret" = "open_below"    # New line below
+"C-S-ret" = "open_above"  # New line above
 "C-/" = "toggle_comments" # Comment toggle
-"del" = "delete_selection" # Delete selection
+
+# ── Indentation (VS Code style) ───────────────────────────────────
+"C-]" = "indent"          # Indent (Ctrl+])
+"C-[" = "unindent"        # Unindent (Ctrl+[)
+
+# ── Deletion ──────────────────────────────────────────────────────
+"del" = "delete_char_forward"   # Forward delete
+"backspace" = "delete_char_backward" # Backward delete
 
 # ── Command Access ────────────────────────────────────────────────
 "C-S-p" = "command_palette" # Command palette
@@ -127,14 +149,11 @@ hidden = false
 
 # ── Clipboard Operations ──────────────────────────────────────────
 "C-c" = ["normal_mode", "yank_main_selection_to_clipboard", "insert_mode"]
-# "C-c" = "yank_main_selection_to_clipboard"
-# "C-c" = "yank_to_clipboard"
 "C-v" = "paste_clipboard_before" # Paste
-# "C-v" = "paste_clipboard_after" # Paste
-"C-x" = [ # Cut
+"C-x" = [ # Cut (no double-yank)
     "normal_mode",
     "yank_main_selection_to_clipboard",
-    "delete_selection",
+    "delete_selection_noyank",
     "insert_mode",
 ]
 
@@ -164,12 +183,19 @@ hidden = false
 
 # ── Text Manipulation ─────────────────────────────────────────────
 "C-/" = ["normal_mode", "toggle_comments", "insert_mode"]
-"tab" = "indent"                                          # Indent
-"S-tab" = "unindent"                                      # Unindent
-"del" = "delete_selection"                                # Delete selection
 
-# ── Completion ────────────────────────────────────────────────────
-"C-space" = "completion" # Auto-complete trigger
+# ── Indentation (VS Code style) ───────────────────────────────────
+"C-]" = ["normal_mode", "indent", "insert_mode"]
+"C-[" = ["normal_mode", "unindent", "insert_mode"]
+
+# ── Tab & Completion ──────────────────────────────────────────────
+# Explicitly make Tab insert tab/spaces (not jump out of auto-pairs)
+"tab" = "insert_tab"
+# C-space for manual completion
+"C-space" = "completion"
+
+# ── Deletion ──────────────────────────────────────────────────────
+"del" = "delete_char_forward"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # SELECT MODE KEYBINDINGS
@@ -184,9 +210,9 @@ hidden = false
 "C-S-q" = ["normal_mode", ":quit!"] # Force quit
 
 # ── Clipboard Operations ──────────────────────────────────────────
-"C-c" = "yank_main_selection_to_clipboard"                       # Copy selection
-"C-x" = ["yank_main_selection_to_clipboard", "delete_selection"] # Cut
-"C-v" = "replace_selections_with_clipboard"                      # Paste over selection
+"C-c" = "yank_main_selection_to_clipboard"  # Copy selection
+"C-x" = ["yank_main_selection_to_clipboard", "delete_selection_noyank"] # Cut (no double-yank)
+"C-v" = "replace_selections_with_clipboard" # Paste over selection
 
 # ── Selection Extension ───────────────────────────────────────────
 "S-left" = "extend_char_left"   # Extend with arrows
@@ -204,6 +230,11 @@ hidden = false
 
 # ── Text Manipulation ─────────────────────────────────────────────
 "C-/" = "toggle_comments"  # Comment toggle
-"tab" = "indent"           # Indent selection
-"S-tab" = "unindent"       # Unindent selection
-"del" = "delete_selection" # Delete selection
+
+# ── Indentation (VS Code style) ───────────────────────────────────
+"C-]" = "indent"    # Indent selection
+"C-[" = "unindent"  # Unindent selection
+
+# ── Deletion (GUI-like - delete and start typing) ─────────────────
+"del" = ["delete_selection_noyank", "insert_mode"]
+"backspace" = ["delete_selection_noyank", "insert_mode"]

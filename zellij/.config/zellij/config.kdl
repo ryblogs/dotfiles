@@ -441,3 +441,10 @@ default_mode "locked"
 // Default: true
 // 
 // show_release_notes false
+
+// Custom Tweaks
+ui {
+    pane_frames {
+        rounded_corners true
+    }
+}

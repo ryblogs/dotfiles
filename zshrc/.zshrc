@@ -110,6 +110,105 @@ fi
 
 # --- Ryblogs
 
+# Yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# Docker
+docker-kill-all() {
+    echo "Docker Nuclear Option - Removing EVERYTHING..."
+
+    # Stop all running containers
+    if [ "$(docker ps -q)" ]; then
+        echo "Stopping all running containers..."
+        docker stop $(docker ps -q)
+    fi
+
+    # Remove all containers (running and stopped)
+    if [ "$(docker ps -aq)" ]; then
+        echo "Removing all containers..."
+        docker rm $(docker ps -aq)
+    fi
+
+    # Remove all images
+    if [ "$(docker images -q)" ]; then
+        echo "Removing all images..."
+        docker rmi $(docker images -q) --force
+    fi
+
+    # Remove all volumes
+    if [ "$(docker volume ls -q)" ]; then
+        echo "Removing all volumes..."
+        docker volume rm $(docker volume ls -q)
+    fi
+
+    # Remove all networks (except default ones)
+    if [ "$(docker network ls -q --filter type=custom)" ]; then
+        echo "Removing all custom networks..."
+        docker network rm $(docker network ls -q --filter type=custom)
+    fi
+
+    # Clean up any remaining Docker system data
+    echo "Running system prune..."
+    docker system prune -af --volumes
+
+    # Clean up build cache
+    echo "Cleaning build cache..."
+    docker builder prune -af
+
+    echo "Docker apocalypse complete! Everything has been removed."
+    echo "Current Docker usage:"
+    docker system df
+}
+
+# Podman
+podman-enter() {
+    local search_term="$1"
+
+    # Check if search term was provided
+    if [[ -z "$search_term" ]]; then
+        echo "Usage: podman-enter <container_prefix>"
+        echo "Example: podman-enter e9"
+        return 1
+    fi
+
+    # Find running containers that match the search term (by ID or name)
+    local matches=$(podman ps --format "{{.ID}} {{.Names}}" | grep -E "^$search_term|[[:space:]].*$search_term")
+
+    # Check if any matches were found
+    if [[ -z "$matches" ]]; then
+        echo "❌ No running container found matching '$search_term'"
+        echo ""
+        echo "Running containers:"
+        podman ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
+        return 1
+    fi
+
+    # Get the container ID from the first match
+    local container_id=$(echo "$matches" | head -n1 | awk '{print $1}')
+    local container_name=$(echo "$matches" | head -n1 | awk '{print $2}')
+
+    # Warn if multiple matches found
+    if [[ $(echo "$matches" | wc -l) -gt 1 ]]; then
+        echo "Multiple containers match '$search_term'. Using first match:"
+        echo "$matches"
+        echo ""
+    fi
+
+    echo "Entering container $container_id ($container_name)..."
+
+    # Try bash first, fall back to sh if bash is not available
+    if ! podman exec -it "$container_id" bash 2>/dev/null; then
+        echo "bash not found, trying sh..."
+        podman exec -it "$container_id" sh
+    fi
+}
+
 # EZA
 # Remove any existing ls alias (from Oh My Zsh or plugins)
 unalias ls 2>/dev/null || true
@@ -130,6 +229,7 @@ source <(fzf --zsh)
 
 # HOMEBREW
 steep() {
+  export HOMEBREW_NO_AUTO_UPDATE=1
   brew update
   brew upgrade
   brew upgrade --cask
@@ -137,6 +237,9 @@ steep() {
   brew cleanup
   brew doctor
 }
+# Homebrew performance settings
+export HOMEBREW_FETCH_JOBS=10
+export HOMEBREW_MAKE_JOBS=5
 
 # ATUIN
 eval "$(atuin init zsh)"
@@ -212,13 +315,105 @@ compdef _uv_run_mod uv
 # GO
 export PATH=$PATH:$(go env GOPATH)/bin
 
-# GLOBDOTS
-setopt globdots
-
 # AIDER
 export AIDER_OPENAI_API_KEY=none
 export AIDER_OPENAI_API_BASE=http://localhost:8888/v1
 export AIDER_MODEL=openai/Qwen/Qwen3-30B-A3B-MLX-4bit
 
+# UPDATE ALL
+update-all() {
+    echo "Starting system-wide updates...\n"
+
+    local had_errors=0
+
+    # Update Homebrew
+    if command -v brew &> /dev/null; then
+        echo "Updating Homebrew..."
+        export HOMEBREW_NO_AUTO_UPDATE=1
+        if brew update && brew upgrade && brew upgrade --cask && brew autoremove && brew cleanup && brew doctor; then
+            echo "Homebrew updated\n"
+        else
+            echo "Homebrew update had issues\n"
+            had_errors=1
+        fi
+    else
+        echo "Homebrew not installed, skipping...\n"
+    fi
+
+    # Update Rust toolchains
+    if command -v rustup &> /dev/null; then
+        echo "Updating Rust..."
+        if rustup update; then
+            echo "Rust updated\n"
+        else
+            echo "Rust update failed\n"
+            had_errors=1
+        fi
+    else
+        echo "Rust not installed, skipping...\n"
+    fi
+
+    # Update all uv tools
+    if command -v uv &> /dev/null; then
+        echo "Updating uv tools..."
+        if uv tool upgrade --all; then
+            echo "uv tools updated\n"
+        else
+            echo "uv tools update failed\n"
+            had_errors=1
+        fi
+    else
+        echo "uv not installed, skipping uv tools...\n"
+    fi
+
+    # Update oh-my-zsh
+    if [ -d "$HOME/.oh-my-zsh" ]; then
+        echo "Updating oh-my-zsh..."
+        # omz update can have weird exit codes, so we don't check it strictly
+        omz update || true
+
+        # Update custom oh-my-zsh plugins
+        echo "\nUpdating custom oh-my-zsh plugins..."
+        local plugin_errors=0
+        local plugins_found=0
+        for plugin in ~/.oh-my-zsh/custom/plugins/*/; do
+            if [ -d "$plugin/.git" ]; then
+                plugins_found=1
+                echo "  Updating $(basename $plugin)..."
+                if ! git -C "$plugin" pull; then
+                    echo "  Failed to update $(basename $plugin)"
+                    plugin_errors=1
+                fi
+            fi
+        done
+
+        if [ $plugins_found -eq 0 ]; then
+            echo "  No custom plugins with git repos found"
+        fi
+
+        if [ $plugin_errors -eq 0 ]; then
+            echo "oh-my-zsh updated\n"
+        else
+            echo "oh-my-zsh updated but some plugins had issues\n"
+            had_errors=1
+        fi
+    else
+        echo "oh-my-zsh not installed, skipping...\n"
+    fi
+
+    # Final summary
+    echo "================================"
+    if [ $had_errors -eq 0 ]; then
+        echo "All updates complete!"
+    else
+        echo "Updates complete with some errors"
+        echo "Check the output above for details"
+    fi
+}
+
 # STARSHIP
 eval "$(starship init zsh)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/rsullenb/.lmstudio/bin"
+# End of LM Studio CLI section
