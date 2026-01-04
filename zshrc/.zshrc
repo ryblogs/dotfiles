@@ -112,11 +112,11 @@ fi
 
 # Yazi
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
 }
 
 # Docker
@@ -214,11 +214,11 @@ podman-enter() {
 unalias ls 2>/dev/null || true
 # Only use enhanced eza when output goes to terminal
 ls() {
-  if [ -t 1 ]; then
-    eza --long -a --group-directories-first --icons=always "$@"
-  else
-    command ls "$@"
-  fi
+    if [ -t 1 ]; then
+        eza --long -a --group-directories-first --icons=always "$@"
+    else
+        command ls "$@"
+    fi
 }
 
 # ZOXIDE
@@ -229,13 +229,13 @@ source <(fzf --zsh)
 
 # HOMEBREW
 steep() {
-  export HOMEBREW_NO_AUTO_UPDATE=1
-  brew update
-  brew upgrade
-  brew upgrade --cask
-  brew autoremove
-  brew cleanup
-  brew doctor
+    export HOMEBREW_NO_AUTO_UPDATE=1
+    brew update
+    brew upgrade
+    brew upgrade --cask
+    brew autoremove
+    brew cleanup
+    brew doctor
 }
 # Homebrew performance settings
 export HOMEBREW_FETCH_JOBS=10
@@ -257,30 +257,30 @@ alias z=zellij
 # Override clear command to work properly within zellij
 # When inside zellij, clear both terminal and zellij scrollback
 clear() {
-  if [[ -n "$ZELLIJ" ]]; then
-    command clear && zellij action clear
-  else
-    command clear
-  fi
+    if [[ -n "$ZELLIJ" ]]; then
+        command clear && zellij action clear
+    else
+        command clear
+    fi
 }
 # Custom session completion function for intelligent tab completion
 # Shows session names with descriptions (e.g., "main: RUNNING (1 tabs)")
 # Note: see here: https://github.com/zellij-org/zellij/issues/1933
 _zellij_sessions() {
-  local line sessions desc
-  # Get list of sessions without formatting (zellij ls -n)
-  sessions=("${(@f)$(zellij ls -n)}")
-  local -a session_names_with_desc
+    local line sessions desc
+    # Get list of sessions without formatting (zellij ls -n)
+    sessions=("${(@f)$(zellij ls -n)}")
+    local -a session_names_with_desc
 
-  # Parse each session line to extract name and description
-  for line in "${sessions[@]}"; do
-    session_name=${line%% *}    # Everything before first space (session name)
-    desc=${line#* }             # Everything after first space (description)
-    session_names_with_desc+=("$session_name:$desc")
-  done
+    # Parse each session line to extract name and description
+    for line in "${sessions[@]}"; do
+        session_name=${line%% *}    # Everything before first space (session name)
+        desc=${line#* }             # Everything after first space (description)
+        session_names_with_desc+=("$session_name:$desc")
+    done
 
-  # Provide completion options with descriptions
-  _describe -t sessions 'active session' session_names_with_desc
+    # Provide completion options with descriptions
+    _describe -t sessions 'active session' session_names_with_desc
 }
 # ----------------------------------------------------------------------------
 # Tab Completion Setup
@@ -291,12 +291,12 @@ _zellij_sessions() {
 # 2. Replace default session completion with our custom _zellij_sessions function
 # 3. Fix the compdef registration line
 . <(zellij setup --generate-completion zsh | sed -E '
-  s/^\((attach)\)/(\1|a)/
-  s/^\((kill-session)\)/(\1|k)/
-  s/^\((delete-session)\)/(\1|d)/
-  s/::session-name -- Name of the session to attach to:/::session-name:_zellij_sessions/
-  s/::target-session -- Name of target session:/::target-session:_zellij_sessions/
-  s/^(_(zellij) ).*/compdef \1\2/
+    s/^\((attach)\)/(\1|a)/
+    s/^\((kill-session)\)/(\1|k)/
+    s/^\((delete-session)\)/(\1|d)/
+    s/::session-name -- Name of the session to attach to:/::session-name:_zellij_sessions/
+    s/::target-session -- Name of target session:/::target-session:_zellij_sessions/
+    s/^(_(zellij) ).*/compdef \1\2/
 ')
 # Enable tab completion for our 'z' alias
 compdef z=_zellij
@@ -304,11 +304,11 @@ compdef z=_zellij
 # UV
 # Fix completions for uv run to autocomplete .py files
 _uv_run_mod() {
-  if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
-    _arguments '*:filename:_files -g "*.py"'
-  else
-    _uv "$@"
-  fi
+    if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
+        _arguments '*:filename:_files -g "*.py"'
+    else
+        _uv "$@"
+    fi
 }
 compdef _uv_run_mod uv
 
