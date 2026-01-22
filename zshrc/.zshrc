@@ -417,3 +417,5 @@ eval "$(starship init zsh)"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/rsullenb/.lmstudio/bin"
 # End of LM Studio CLI section
+
+export PATH="/Users/rsullenb/.pixi/bin:$PATH"
