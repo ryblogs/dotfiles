@@ -1,0 +1,97 @@
+local wezterm = require 'wezterm'
+local config = wezterm.config_builder()
+
+config.window_decorations = "RESIZE|INTEGRATED_BUTTONS"
+
+-- Theme
+config.color_scheme = 'ayu'
+config.font = wezterm.font('JetBrainsMono Nerd Font')
+config.font_size = 14
+
+-- Tab bar
+config.use_fancy_tab_bar = true
+config.tab_max_width = 32
+config.show_new_tab_button_in_tab_bar = true
+
+-- Window frame
+config.window_frame = {
+  font = wezterm.font({ family = 'JetBrainsMono Nerd Font', weight = 'Medium' }),
+  font_size = 14,
+  active_titlebar_bg = '#0f1419',
+  inactive_titlebar_bg = '#0f1419',
+}
+
+-- Tab colors
+config.colors = {
+  tab_bar = {
+    active_tab = { bg_color = '#1a1f26', fg_color = '#4cbf99', intensity = 'Bold' },
+    inactive_tab = { bg_color = '#0f1419', fg_color = '#5c6773' },
+    inactive_tab_hover = { bg_color = '#1a1f26', fg_color = '#a0a8b0' },
+    new_tab = { bg_color = '#0f1419', fg_color = '#5c6773' },
+    new_tab_hover = { bg_color = '#1a1f26', fg_color = '#4cbf99' },
+  },
+}
+
+-- Window
+config.window_padding = {
+  left = 8,
+  right = 8,
+  top = 8,
+  bottom = 8,
+}
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 20
+
+-- Process icons
+local process_icons = {
+  ['nvim'] = wezterm.nerdfonts.custom_vim,
+  ['vim'] = wezterm.nerdfonts.custom_vim,
+  ['zsh'] = wezterm.nerdfonts.dev_terminal,
+  ['bash'] = wezterm.nerdfonts.dev_terminal,
+  ['fish'] = wezterm.nerdfonts.dev_terminal,
+  ['node'] = wezterm.nerdfonts.md_nodejs,
+  ['python'] = wezterm.nerdfonts.dev_python,
+  ['python3'] = wezterm.nerdfonts.dev_python,
+  ['git'] = wezterm.nerdfonts.dev_git,
+  ['lazygit'] = wezterm.nerdfonts.dev_git,
+  ['docker'] = wezterm.nerdfonts.dev_docker,
+  ['cargo'] = wezterm.nerdfonts.dev_rust,
+  ['go'] = wezterm.nerdfonts.md_language_go,
+  ['ssh'] = wezterm.nerdfonts.md_server,
+  ['sudo'] = wezterm.nerdfonts.fa_hashtag,
+}
+
+local function get_process_name(pane)
+  local process = pane.foreground_process_name or ''
+  return process:match('([^/\\]+)$') or ''
+end
+
+wezterm.on('format-tab-title', function(tab)
+  local pane = tab.active_pane
+  local process = get_process_name(pane)
+  local icon = process_icons[process] or wezterm.nerdfonts.cod_terminal
+
+  local title = pane.title
+  if #title > 20 then
+    title = title:sub(1, 18) .. '…'
+  end
+
+  local padding = tab.tab_index == 0 and '   ' or ''
+
+  return padding .. ' ' .. icon .. '  ' .. title .. ' '
+end)
+
+wezterm.on('update-status', function(window, pane)
+  local time = wezterm.strftime('%H:%M')
+  local cwd = pane.current_working_dir
+  local dir = cwd and cwd.file_path:match('([^/]+)/?$') or ''
+
+  window:set_right_status(wezterm.format({
+    { Foreground = { Color = '#5c6773' } },
+    { Text = ' ' .. dir .. '  ' },
+    { Foreground = { Color = '#4cbf99' } },
+    { Text = time .. '  ' },
+  }))
+end)
+
+return config
