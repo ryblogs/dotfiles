@@ -36,7 +36,8 @@ local INACTIVE_FG = '#5c6773'
 local HOVER_BG = '#252a30'
 
 -- Window Decorations
-config.window_decorations = "RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+config.integrated_title_button_style = "Windows"
 -- Window Border (Tahoe Liquid Glass)
 config.window_frame = {
     border_left_color = TAHOE_GRAY,
