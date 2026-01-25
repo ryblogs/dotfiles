@@ -36,10 +36,29 @@ config.keys = {
         mods = 'CTRL|SHIFT',
         action = wezterm.action.MoveTabRelative(1),
     },
+    { key = 'd', mods = 'CMD',       action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    { key = 'd', mods = 'CMD|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
 }
 
 -- Set the cursor to a blinking vertical bar
 config.default_cursor_style = 'BlinkingBar'
+
+-- Cursor Tail
+-- config.cursor_trail = {
+--     enabled = true,
+--     -- dwell_threshold controls the amount of time the cursor must sit still
+--     -- to draw a trail.
+--     dwell_threshold = 80,
+--     -- distance_threshold defines the radius in cells the cursor must jump before
+--     -- a trail is drawn.
+--     distance_threshold = 5,
+--     -- duration is the animation time in milliseconds for leading edges of the trail to reach the cursor
+--     duration = 300,
+--     -- spread is a multiplier for duration applied to the trailing edges of the quad used to render the trail. This increases the apparent smear.
+--     spread = 2,
+--     opacity = 0.6,
+-- }
+-- config.animation_fps = 60
 
 -- Colors
 local TAHOE_GRAY = '#383838'
