@@ -23,6 +23,21 @@ config.mouse_bindings = {
     },
 }
 
+-- Keymaps
+config.keys = {
+    -- Move tab relative to its current position
+    {
+        key = 'LeftArrow',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.MoveTabRelative(-1),
+    },
+    {
+        key = 'RightArrow',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.MoveTabRelative(1),
+    },
+}
+
 -- Set the cursor to a blinking vertical bar
 config.default_cursor_style = 'BlinkingBar'
 
