@@ -1,0 +1,42 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    },
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      // Focus back to the editor from the terminal
+      "shift-enter": "terminal_panel::ToggleFocus",
+    },
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      /*
+       * IPYTHON WORKFLOW:
+       * Copies selected text, toggles terminal, pastes, executes,
+       * and jumps back to the editor.
+       */
+      "shift-enter": [
+        "workspace::SendKeystrokes",
+        "cmd-c ctrl-` cmd-v enter enter shift-enter",
+      ],
+    },
+  },
+]

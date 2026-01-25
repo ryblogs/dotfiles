@@ -1,0 +1,55 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font"
+  },
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": false
+  },
+  "inlay_hints": {
+    "show_background": false,
+    "enabled": true,
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Ayu Dark",
+  },
+  // Titlebar related settings
+  "title_bar": {
+    // Whether to show the branch icon beside branch switcher in the titlebar.
+    "show_branch_icon": false,
+    // Whether to show the branch name button in the titlebar.
+    "show_branch_name": true,
+    // Whether to show the project host and name in the titlebar.
+    "show_project_items": true,
+    // Whether to show onboarding banners in the titlebar.
+    "show_onboarding_banner": true,
+    // Whether to show user picture in the titlebar.
+    "show_user_picture": true,
+    // Whether to show the sign in button in the titlebar.
+    "show_sign_in": false,
+  },
+  "languages": {
+    "Python": {
+      "colorize_brackets": true,
+      "language_servers": [
+        // Disable basedpyright and enable ty, and otherwise
+        // use the default configuration.
+        "ty",
+        "!basedpyright",
+        "...",
+      ],
+    },
+  },
+}
