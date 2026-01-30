@@ -153,7 +153,14 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover)
     local process = get_process_name(pane)
     local icon = process_icons[process] or wezterm.nerdfonts.cod_terminal
 
+    -- Reserve space for the separator (1 char) to prevent it from being truncated
+    local max_title_width = config.tab_max_width - 1
     local display_title = string.format(' %d:  %s  %s ', tab.tab_index + 1, icon, title)
+
+    -- Truncate the title if needed to leave room for the separator
+    if wezterm.column_width(display_title) > max_title_width then
+        display_title = wezterm.truncate_right(display_title, max_title_width - 1) .. '…'
+    end
 
     local bg = INACTIVE_BG
     local fg = INACTIVE_FG
